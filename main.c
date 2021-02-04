@@ -29,6 +29,7 @@ void setting();
 void scoreboard();
 
 int main() {
+    system("color 10");
     start();
     int op;
     //mainmenu();
