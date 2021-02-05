@@ -52,7 +52,7 @@ int main() {
                 system("cls");
                 break;
             case 4 :
-                //setting();
+                setting();
                 system("cls");
                 break;
             case 5 :
@@ -67,6 +67,87 @@ int main() {
                 system("cls");
         }
     }
+}
+void setting(){
+    int op1;
+    printf("1. Theme\n0.Back\n");
+    scanf("%d",&op1);
+    if (op1 == 0)
+        return;
+    else if (op1 != 0 && op1!= 1){
+        printf("Invalid input\nPress Enter To Try again");
+        getchar();getchar();
+        system("cls");
+        setting();
+    }
+    else {
+        system("cls");
+        char op2;
+        printf("                8 = Gray\n"
+               "    1 = Blue        9 = Light Blue\n"
+               "    2 = Green       A = Light Green\n"
+               "    3 = Aqua        B = Light Aqua\n"
+               "    4 = Red         C = Light Red\n"
+               "    5 = Purple      D = Light Purple\n"
+               "    6 = Yellow      E = Light Yellow\n"
+               "    7 = White       F = Bright White\n");
+        getchar();
+        scanf("%c", &op2);
+        switch (op2) {
+            case '1' :
+                system("color 10");
+                break;
+            case '2':
+                system("color 20");
+                break;
+            case '3':
+                system("color 30");
+                break;
+            case '4':
+                system("color 40");
+                break;
+            case '5':
+                system("color 50");
+                break;
+            case '6':
+                system("color 60");
+                break;
+            case '7':
+                system("color 70");
+                break;
+            case '8':
+                system("color 80");
+                break;
+            case '9':
+                system("color 90");
+                break;
+            case 'A':
+                system("color A0");
+                break;
+            case 'B':
+                system("color B0");
+                break;
+            case 'C':
+                system("color C0");
+                break;
+            case 'D':
+                system("color D0");
+                break;
+            case 'E':
+                system("color E0");
+                break;
+            case 'F':
+                system("color F0");
+                break;
+            default:
+                printf("Invalid input\nPress Enter To Try again");
+                getchar();
+                getchar();
+                system("cls");
+                setting();
+        }
+    }
+    return;
 }
 /*
  * With Thank to Saman Husseini ,Muhammad Fatemi, Amirparsa Salmankhah(DADDY) , Faraz Farangi Zadeh , and َ All TAs
