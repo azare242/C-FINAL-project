@@ -30,11 +30,11 @@ typedef struct users{
     struct users * next;
 }User;
 
-void play_with_friend();
-void play_with_bot();
+void play_with_friend(User * head);
+void play_with_bot(User * head);
 void load_last_game();
 void setting();
-void scoreboard();
+void scoreboard(User * head);
 void deletelist(User ** head);
 void add(User ** head,char username[20]);
 void init_user(User ** head);
@@ -42,13 +42,15 @@ void print(User * head);
 void save(User * head);
 User * loadnext (User * head, FILE * file);
 User * load(User * head);
+User * choseuser(User * head);
 
 
 int main() {
     system("color 10");
     start();
     int op;
-    //mainmenu();
+    User * list = NULL;
+    list = load(list);
 
     while (op != '6') {
         mainmenu();
@@ -56,7 +58,7 @@ int main() {
         system("cls");
         switch (op){
             case 1 :
-                //play_with_friend();
+                play_with_friend(list);
                 system("cls");
                 break;
             case 2:
@@ -84,19 +86,19 @@ int main() {
         }
     }
 }
-void setting(){
+void setting() {
     int op1;
     printf("1. Theme\n0.Back\n");
-    scanf("%d",&op1);
+    scanf("%d", &op1);
     if (op1 == 0)
         return;
-    else if (op1 != 0 && op1!= 1){
+    else if (op1 != 0 && op1 != 1) {
         printf("Invalid input\nPress Enter To Try again");
-        getchar();getchar();
+        getchar();
+        getchar();
         system("cls");
         setting();
-    }
-    else {
+    } else {
         system("cls");
         char op2;
         printf("8 = Gray\n"
@@ -307,6 +309,65 @@ User * load(User * head) {
     }
     fclose(file);
     return head;
+}
+User * choseuser(User * head){
+    User *player = (User *)malloc(sizeof(User));
+    print(head);
+    int choose;
+    printf("Please Enter Number Of Your Profile\n");
+    scanf("%d", &choose);
+    User *temp = head;
+    int i = 1;
+    for (temp; temp != NULL; temp = temp->next) {
+        if (i == choose) {
+            strcpy(player->username,temp->username);
+            player->score = temp->score;
+            player->next = NULL;
+            break;
+        } else i++;
+    }
+    return player;
+}
+void play_with_friend(User * head)
+{
+    User * player1;
+    printf("FirstPlayer\n");
+    printf("1.Chose User\n2.New User\n");
+    int opp;
+    scanf("%d",&opp);
+    if (opp == 1){
+        player1 = choseuser(head);
+    }
+    else if(opp == 2){
+        player1 = (User *)malloc(sizeof(User));
+        get_AND_add(&head);
+        save(head);
+        User * temp;
+        for ( temp = head ; temp->next != NULL ; temp = temp->next);
+        strcpy(player1->username,temp->username);
+        player1->score = temp->score;
+        player1->next = NULL;
+    }
+    User *player2;
+    printf("Second Player\n");
+    printf("1.Chose User\n2.New User\n");
+    scanf("%d",&opp);
+    if (opp == 1) {
+        player2 = choseuser(head);
+    }
+    else if (opp == 2) {
+        player2 = (User *)malloc(sizeof(User));
+        get_AND_add(&head);
+        save(head);
+        User * temp;
+        for ( temp = head ; temp->next != NULL ; temp = temp->next);
+        strcpy(player2->username,temp->username);
+        player2->score = temp->score;
+        player2->next = NULL;
+    }
+//...
+//...
+//...
 }
 /*
  * With Thank to Saman Husseini ,Muhammad Fatemi, Amirparsa Salmankhah(DADDY) , Faraz Farangi Zadeh , and َ All TAs
