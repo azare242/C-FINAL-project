@@ -22,7 +22,7 @@ void start() {
     system("cls");
 }
 void mainmenu() {
-    printf("1. Play With Friend\n2. Play With Bot\n3. Load Last Game\n4. Setting\n5. Score Board\n6. Exit\n");
+    printf("1. Play With Friend\n2. Play With Bot\n3. Load Game\n4. Load Last Game\n5. Scoreboard\n6. Settings\n7. Exit\n");
 }
 typedef struct users{
     char username[10];
@@ -32,6 +32,7 @@ typedef struct users{
 
 void play_with_friend(User * head);
 void play_with_bot(User * head);
+void loadgame();
 void load_last_game();
 void setting();
 void scoreboard(User * head);
@@ -66,21 +67,24 @@ int main() {
                 system("cls");
                 break;
             case 3 :
-                //load_last_game();
+                //loadgame();
                 system("cls");
                 break;
             case 4 :
-                setting();
+                //load_last_game();
                 system("cls");
                 break;
             case 5 :
-                //scoreboard();
+                setting();
                 system("cls");
                 break;
             case 6:
+                //scoreboard();
+                system("cls");
+            case 7 :
                 exit(10);
             default:
-                printf("Invalid Input Press Enter To Try Again");
+                printf("Invalid Input Press Enter To Try Again\n");
                 getchar();getchar();
                 system("cls");
         }
@@ -93,7 +97,7 @@ void setting() {
     if (op1 == 0)
         return;
     else if (op1 != 0 && op1 != 1) {
-        printf("Invalid input\nPress Enter To Try again");
+        printf("Invalid input\nPress Enter To Try again\n");
         getchar();
         getchar();
         system("cls");
