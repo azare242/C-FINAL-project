@@ -1,3 +1,8 @@
+typedef struct users{
+    char username[10];
+    int score;
+    struct users * next;
+}User;
 const int map_rows = 10;
 const int map_columns = 10;
 typedef struct ships{

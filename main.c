@@ -12,6 +12,7 @@
 #include <math.h>
 #include <string.h>
 #include "maps.h"
+#include "gameloop.h"
 
 void start() {
     printf("*********************************\n");
@@ -25,11 +26,7 @@ void start() {
 void mainmenu() {
     printf("1. Play With Friend\n2. Play With Bot\n3. Load Game\n4. Load Last Game\n5. Scoreboard\n6. Settings\n7. Exit\n");
 }
-typedef struct users{
-    char username[10];
-    int score;
-    struct users * next;
-}User;
+
 
 
 void play_with_friend(User * head);
@@ -371,25 +368,6 @@ void printmap_for_set(int map[map_rows][map_columns]){
         for (int j = 0 ; j < map_columns ; j++)
         {
             printf("%d  ",map[i][j]);
-        }
-        column_meter++;
-        printf("\n");
-    }
-}
-void printmap(char map[map_rows][map_columns])
-{
-    printf("    0  1  2  3  4  5  6  7  8  9\n");
-    int column_meter = 0;
-    for (int i = 0 ; i < map_rows ; i++)
-    {
-
-        if (column_meter < 10)
-            printf("%d   ",column_meter);
-        else if (column_meter == 10) printf("%d  ",column_meter);
-
-        for (int j = 0 ; j < map_columns ; j++)
-        {
-            printf("%c  ",map[i][j]);
         }
         column_meter++;
         printf("\n");
