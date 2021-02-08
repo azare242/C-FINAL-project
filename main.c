@@ -30,6 +30,19 @@ typedef struct users{
     struct users * next;
 }User;
 
+typedef struct ships{
+    int cord_x_b;
+    int cord_x_e;
+    int cord_y_b;
+    int cord_y_e;
+    int size;
+    int state;
+    struct ships * next
+}Ships;
+
+const int map_rows = 10;
+const int map_columns =10;
+
 void play_with_friend(User * head);
 void play_with_bot(User * head);
 void loadgame();
@@ -44,7 +57,16 @@ void save(User * head);
 User * loadnext (User * head, FILE * file);
 User * load(User * head);
 User * choseuser(User * head);
-
+void initshowmap_empty(char map[map_rows][map_columns]);
+void initplayermap_empty(int map[map_rows][map_columns]);
+void printmap_for_set(int map[map_rows][map_columns]);
+void printmap_ingame(char map[map_rows][map_columns]);
+void newship(Ships ** head,int xb,int yb,int xe,int ye,int size,int state);
+bool isnotshiphere(int xb,int xe,int yb,int ye,int state,int map[map_rows][map_columns]);
+void setshipsonmap(int xb,int xe,int yb,int ye,int state,int map[map_rows][map_columns]);
+void getships(int map[map_rows][map_columns],Ships * head,int size);
+void getshipsize1(int map[map_rows][map_columns],Ships * head);
+void setmap(int map[map_rows][map_columns],Ships * head);
 
 int main() {
     system("color 10");
@@ -332,6 +354,361 @@ User * choseuser(User * head){
     }
     return player;
 }
+void initshowmap_empty(char map[map_rows][map_columns]){
+    for (int i = 0 ; i < map_rows ; i++)
+    {
+        for (int j = 0 ; j < map_columns ; j++)
+        {
+            map[i][j] = (char)220;
+        }
+    }
+}
+void initplayermap_empty(int map[map_rows][map_columns]) {
+    for (int i = 0; i < map_rows; i++) {
+        for (int j = 0; j < map_columns; j++) {
+            map[i][j] = 0;
+        }
+    }
+}
+void printmap_for_set(int map[map_rows][map_columns]){
+    printf("    0  1  2  3  4  5  6  7  8  9\n");
+    int column_meter = 0;
+    for (int i = 0 ; i < map_rows ; i++)
+    {
+
+        if (column_meter < 10)
+            printf("%d   ",column_meter);
+        else if (column_meter == 10) printf("%d  ",column_meter);
+
+        for (int j = 0 ; j < map_columns ; j++)
+        {
+            printf("%d  ",map[i][j]);
+        }
+        column_meter++;
+        printf("\n");
+    }
+}
+void printmap(char map[map_rows][map_columns])
+{
+    printf("    0  1  2  3  4  5  6  7  8  9\n");
+    int column_meter = 0;
+    for (int i = 0 ; i < map_rows ; i++)
+    {
+
+        if (column_meter < 10)
+            printf("%d   ",column_meter);
+        else if (column_meter == 10) printf("%d  ",column_meter);
+
+        for (int j = 0 ; j < map_columns ; j++)
+        {
+            printf("%c  ",map[i][j]);
+        }
+        column_meter++;
+        printf("\n");
+    }
+}
+void newship(Ships ** head, int xb,int yb,int xe,int ye,int size,int state) {
+    Ships * new = (Ships *)malloc(sizeof(Ships));
+    new->cord_x_b = xb;
+    new->cord_x_e = xe;
+    new->cord_y_b = yb;
+    new->cord_y_e = ye;
+    new->size = size;
+    new->state = state;
+    new->next= *head;
+    *head = new;
+}
+bool isnotshiphere(int xb,int xe,int yb,int ye,int state ,int map[map_rows][map_columns]) {
+    if (state == 1) {
+        for (int i = yb ; i < ye + 1 ; i++){
+            if (map[xb][i] == 1 || map[xb][i] == 2) return false;
+        }
+        return true;
+    }
+    else if (state == 2){
+        for (int i = xb ; i < xe+1 ; i++){
+            if (map[i][yb] == 1 || map[i][yb] == 2) return false;
+        }
+        return true;
+    }
+}
+void setshipsonmap(int xb,int xe,int yb,int ye,int state,int map[map_rows][map_columns])
+{
+    if (state == 1) {
+        if (xb != 0 && xb != 9) {
+            for (int i = yb; i < ye + 1; i++) {
+                map[xb][i] = 1;
+                map[xb + 1][i] = 2;
+                map[xb - 1][i] = 2;
+            }
+            if (yb != 0 && ye != 9) {
+                map[xb - 1][yb - 1] = 2;
+                map[xb][yb - 1] = 2;
+                map[xb + 1][yb - 1] = 2;
+                map[xe + 1][ye + 1] = 2;
+                map[xe][ye + 1] = 2;
+                map[xe - 1][ye + 1] = 2;
+            } else if (yb == 0 && ye != 9) {
+                map[xe][ye + 1] = 2;
+                map[xe + 1][ye + 1] = 2;
+                map[xe - 1][ye + 1] = 2;
+            }
+            else if (yb != 0 && ye == 9){
+                map[xb][yb - 1] = 2;
+                map[xb + 1][yb - 1] = 2;
+                map[xb - 1][yb - 1] = 2;
+            }
+        }
+
+        else if (xb == 0 || xb == 9){
+            for (int i = yb ; i < ye+1 ; i++){
+                map[xb][i] = 1;
+                if (xb == 0 ) {
+                    map[xb+1][i] = 2;
+                }
+                else if (xe == 9){
+                    map[xb-1][i] = 2;
+                }
+                if (ye == 9 && yb != 0){
+                    map[xb][yb - 1]= 2;
+                    map[xb+1][yb -1] = 2;
+                }
+                if (xb == 0 && ye != 9 && yb == 0 && xe != 9 ){
+                    map[xb][ye + 1] = 2;
+                    map[xb+1][ye+1] = 2;
+                }
+
+                if (xb == 0 && ye != 9 && yb != 0 && xe != 9) {
+                    map[xb][ye + 1] = 2;
+                    map[xb + 1][ye + 1] = 2;
+                    map[xb][yb - 1] = 2;
+                    map[xb+1][yb - 1] = 2;
+                }
+                if (xe == 9 && ye != 9 && yb != 0 && xb != 0) {
+                    map[xe - 1][ye + 1] = 2;
+                    map[xe][ye + 1] = 2;
+                    map[xb][yb - 1] = 2;
+                    map[xb -1][yb - 1 ] = 2;
+                }
+                if (xe == 9 && ye != 9 && yb == 0 && xb != 0){
+                    map[xe - 1][ye + 1] = 2;
+                    map[xe][ye + 1] = 2;
+                }
+                if (xe == 9 && ye == 9 && yb != 0 && xb != 0){
+                    map[xb - 1][yb - 1] = 2;
+                }
+            }
+        }
+    }
+    else if (state == 2){
+        if (yb != 0 && yb != 9) {
+            for (int i = xb; i < xe + 1; i++) {
+                map[i][yb] = 1;
+                map[i][yb + 1] = 2;
+                map[i][yb - 1] = 2;
+            }
+            if (xb != 0 && xe != 0) {
+                map[xb - 1][yb - 1] = 2;
+                map[xb - 1][yb + 1] = 2;
+                map[xb - 1][yb] = 2;
+                map[xe + 1][ye] = 2;
+                map[xe + 1][ye + 1] = 2;
+                map[xe + 1][ye - 1] = 2;
+            }
+            else if (xb == 0 && xe != 0){
+                map[xe+1][ye] = 2;
+                map[xe+1][ye-1] = 2;
+                map[xe+1][ye+1] = 2;
+
+            }
+            else if (xb != 0 && xe == 0){
+                map[xb - 1][yb] = 2;
+                map[xb - 1][yb -1] = 2;
+                map[xb - 1][yb + 1] = 2;
+            }
+        }
+        else if (yb == 0 || yb == 9){
+            for (int i = xb; i < xe+1 ; ++i) {
+                map[i][yb] = 1;
+
+                if (yb == 0){
+                    map[i][yb+1] = 2;
+                }
+                else if (yb == 9){
+                    map[i][yb - 1] = 2;
+                }
+                if (xb == 0 && xe != 9 && yb == 0 ){
+                    map[xe+1][yb] = 2;
+                    map[xe+1][yb+1] = 2;
+                }
+                if (xb != 0 && xe == 9 && ye != 9 && yb != 0){
+                    map[xb-1][ye] = 2;
+                    map[xb - 1 ][ye + 1] = 2;
+                }
+                if (xb == 0 && xe != 9 && yb == 9){
+                    map[xe+1][ye] = 2;
+                    map[xe+1][ye - 1] = 2;
+                }
+                if (xb != 0 && xe == 9 && yb == 9 ){
+                    map[xb -1][yb] = 2;
+                    map[xb-1][yb - 1] = 2;
+                }
+                if (xe != 9 && xb != 0 && yb == 0 && ye != 9 ){
+                    map[xb -1][yb] = 2;
+                    map[xb - 1][yb + 1] = 2;
+                    map[xe + 1][yb] = 2;
+                    map[xe + 1 ][yb + 1] = 2;
+                }
+                if(xe != 9 && xb != 0 && yb != 0 && ye == 9){
+                    map[xb - 1][ye] = 2;
+                    map[xb - 1][ye -1 ] = 2;
+                    map[xe + 1][ye] = 2;
+                    map[xe + 1][ye - 1] = 2;
+                }
+                if (xe == 9 && xb != 0 && yb == 0 && ye != 9){
+                    map[xb - 1][yb] = 2;
+                    map[xb - 1][yb + 1] = 2;
+                }
+            }
+        }
+    }
+}
+void getships(int map[map_rows][map_columns],Ships * list,int size){
+    int xb,xe,yb,ye,state;
+    while(1) {
+        printmap_for_set(map);
+        printf("Enter State of Ship size %d\n(1 For HORIZONTAL , 2 For VERTICAL)\n",size);
+        scanf("%d", &state);
+        system("cls");
+        if (state == 1) break;
+        else if (state == 2) break;
+        else {
+            printf("Invalid Input,Press Enter To Try Again\n");
+            getchar();
+            getchar();
+            system("cls");
+        }
+    }
+    if (state == 1){
+        while (1){
+            printmap_for_set(map);
+            printf("Enter Beginning(ROW COLUMN) of SIZE %d Ship\n",size);
+            scanf("%d %d",&xb,&yb);
+            system("cls");
+            printmap_for_set(map);
+            printf("Enter End (ROW COLUMN) of SIZE %d Ship\n",size);
+            scanf("%d %d",&xe,&ye);
+            system("cls");
+            if (xe == xb && ye - yb + 1 == size && ye > yb && isnotshiphere(xb,xe,yb,ye,state,map)) {
+                break;
+            }
+            else{
+                printf("Invalid Input,Press Enter To Try Again\n");getchar();getchar();
+                system("cls");
+            }
+            system("cls");
+        }
+    }
+    else if (state == 2){
+        while (1){
+            printmap_for_set(map);
+            printf("Enter Beginning(ROW COLUMN) of SIZE %d Ship\n",size);
+            scanf("%d %d",&xb,&yb);
+            system("cls");
+            printmap_for_set(map);
+            printf("Enter End (ROW COLUMN) of SIZE %d Ship\n",size);
+            scanf("%d %d",&xe,&ye);
+            system("cls");
+            if (ye == yb && xe - xb + 1 == size && xe > xb && isnotshiphere(xb,xe,yb,ye,state,map)) {
+                break;
+            }
+            else{
+                printf("Invalid Input,Press Enter To Try Again\n");getchar();getchar();
+                system("cls");
+            }
+            system("cls");
+
+        }
+    }
+    setshipsonmap(xb,xe,yb,ye,state,map);
+    newship(&list,xb,yb,xe,ye,size,state);
+}
+void getshipsize1(int map[map_rows][map_columns],Ships * list)
+{
+    int x1,y1,xt,yt;
+    while (1) {
+        printmap_for_set(map);
+        printf("Enter The Coordinates (ROW COLUMN)Of Size 1 Ship\n");
+        scanf("%d %d", &x1, &y1);
+        xt = x1;
+        yt = y1;
+        system("cls");
+        if (isnotshiphere(x1, xt, y1, yt, 1, map)) break;
+        else {
+            printf("Invalid Input,Press Enter To Try Again\n");
+            getchar();
+            getchar();
+            system("cls");
+        }
+
+        system("cls");
+    }
+    setshipsonmap(x1,xt,y1,yt,1,map);
+    newship(&list,x1,y1,xt,yt,1,1);
+}
+void setmap(int map[map_rows][map_columns],Ships * list)
+{
+    getships(map,list,5);
+    printmap_for_set(map);
+    printf("\nPress Enter To Continue\n");
+    getchar();getchar();
+    system("cls");
+    getships(map,list,3);
+    printmap_for_set(map);
+    printf("\nPress Enter To Continue\n");
+    getchar();getchar();
+    system("cls");
+    getships(map,list,3);
+    printmap_for_set(map);
+    printf("\nPress Enter To Continue\n");
+    getchar();getchar();
+    system("cls");
+    getships(map,list,2);
+    printmap_for_set(map);
+    printf("\nPress Enter To Continue\n");
+    getchar();getchar();
+    system("cls");
+    getships(map,list,2);
+    printmap_for_set(map);
+    printf("\nPress Enter To Continue\n");
+    getchar();getchar();
+    system("cls");
+    getships(map,list,2);
+    printmap_for_set(map);
+    printf("\nPress Enter To Continue\n");
+    getchar();getchar();
+    system("cls");
+    getshipsize1(map,list);
+    printmap_for_set(map);
+    printf("\nPress Enter To Continue\n");
+    getchar();getchar();
+    system("cls");
+    getshipsize1(map,list);
+    printmap_for_set(map);
+    printf("\nPress Enter To Continue\n");
+    getchar();getchar();
+    system("cls");
+    getshipsize1(map,list);
+    printmap_for_set(map);
+    printf("\nPress Enter To Continue\n");
+    getchar();getchar();
+    system("cls");
+    getshipsize1(map,list);
+    printmap_for_set(map);
+    printf("\nPress Enter To Continue\n");
+    getchar();getchar();
+    system("cls");
+}
 void play_with_friend(User * head)
 {
     User * player1;
@@ -339,6 +716,7 @@ void play_with_friend(User * head)
     printf("1.Chose User\n2.New User\n");
     int opp;
     scanf("%d",&opp);
+    system("cls");
     if (opp == 1){
         player1 = choseuser(head);
     }
@@ -352,10 +730,12 @@ void play_with_friend(User * head)
         player1->score = temp->score;
         player1->next = NULL;
     }
+    system("cls");
     User *player2;
     printf("Second Player\n");
     printf("1.Chose User\n2.New User\n");
     scanf("%d",&opp);
+    system("cls");
     if (opp == 1) {
         player2 = choseuser(head);
     }
@@ -369,9 +749,18 @@ void play_with_friend(User * head)
         player2->score = temp->score;
         player2->next = NULL;
     }
-//...
-//...
-//...
+    system("cls");
+    int map_player1[map_rows][map_columns] , map_player2[map_rows][map_columns];
+    initplayermap_empty(map_player1);
+    initplayermap_empty(map_player2);
+    char map_player1_for_show[map_rows][map_columns],map_player2_for_show[map_rows][map_columns];
+    initshowmap_empty(map_player1_for_show);
+    initshowmap_empty(map_player2_for_show);
+    Ships *player1_ships = (Ships *)malloc(sizeof(Ships)) , *player2_ships = (Ships *)malloc(sizeof(Ships));
+    setmap(map_player1,player1_ships);
+    setmap(map_player2,player2_ships);
+
+
 }
 /*
  * With Thank to Saman Husseini ,Muhammad Fatemi, Amirparsa Salmankhah(DADDY) , Faraz Farangi Zadeh , and َ All TAs
