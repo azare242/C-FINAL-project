@@ -573,7 +573,7 @@ void setshipsonmap(int xb,int xe,int yb,int ye,int state,int map[map_rows][map_c
         }
     }
 }
-void getships(int map[map_rows][map_columns],Ships * list,int size){
+void getships(int map[map_rows][map_columns],Ships * head,int size){
     int xb,xe,yb,ye,state;
     while(1) {
         printmap_for_set(map);
@@ -631,9 +631,9 @@ void getships(int map[map_rows][map_columns],Ships * list,int size){
         }
     }
     setshipsonmap(xb,xe,yb,ye,state,map);
-    newship(&list,xb,yb,xe,ye,size,state);
+    newship(&head,xb,yb,xe,ye,size,state);
 }
-void getshipsize1(int map[map_rows][map_columns],Ships * list)
+void getshipsize1(int map[map_rows][map_columns],Ships * head)
 {
     int x1,y1,xt,yt;
     while (1) {
@@ -654,56 +654,56 @@ void getshipsize1(int map[map_rows][map_columns],Ships * list)
         system("cls");
     }
     setshipsonmap(x1,xt,y1,yt,1,map);
-    newship(&list,x1,y1,xt,yt,1,1);
+    newship(&head,x1,y1,xt,yt,1,1);
 }
-void setmap(int map[map_rows][map_columns],Ships * list)
+void setmap(int map[map_rows][map_columns],Ships * head)
 {
-    getships(map,list,5);
+    getships(map,head,5);
     printmap_for_set(map);
     printf("\nPress Enter To Continue\n");
     getchar();getchar();
     system("cls");
-    getships(map,list,3);
+    getships(map,head,3);
     printmap_for_set(map);
     printf("\nPress Enter To Continue\n");
     getchar();getchar();
     system("cls");
-    getships(map,list,3);
+    getships(map,head,3);
     printmap_for_set(map);
     printf("\nPress Enter To Continue\n");
     getchar();getchar();
     system("cls");
-    getships(map,list,2);
+    getships(map,head,2);
     printmap_for_set(map);
     printf("\nPress Enter To Continue\n");
     getchar();getchar();
     system("cls");
-    getships(map,list,2);
+    getships(map,head,2);
     printmap_for_set(map);
     printf("\nPress Enter To Continue\n");
     getchar();getchar();
     system("cls");
-    getships(map,list,2);
+    getships(map,head,2);
     printmap_for_set(map);
     printf("\nPress Enter To Continue\n");
     getchar();getchar();
     system("cls");
-    getshipsize1(map,list);
+    getshipsize1(map,head);
     printmap_for_set(map);
     printf("\nPress Enter To Continue\n");
     getchar();getchar();
     system("cls");
-    getshipsize1(map,list);
+    getshipsize1(map,head);
     printmap_for_set(map);
     printf("\nPress Enter To Continue\n");
     getchar();getchar();
     system("cls");
-    getshipsize1(map,list);
+    getshipsize1(map,head);
     printmap_for_set(map);
     printf("\nPress Enter To Continue\n");
     getchar();getchar();
     system("cls");
-    getshipsize1(map,list);
+    getshipsize1(map,head);
     printmap_for_set(map);
     printf("\nPress Enter To Continue\n");
     getchar();getchar();
