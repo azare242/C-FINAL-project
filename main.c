@@ -13,7 +13,6 @@
 #include <string.h>
 #include "maps.h"
 #include "gameloop.h"
-#include "bot.h"
 
 void start() {
     printf("*********************************\n");
@@ -48,6 +47,8 @@ void initshowmap_empty(char map[map_rows][map_columns]);
 void initplayermap_empty(int map[map_rows][map_columns]);
 void printmap_for_set(int map[map_rows][map_columns]);
 void printmap_ingame(char map[map_rows][map_columns]);
+void newship(Ships ** head,int xb,int yb,int xe,int ye,int size,int state);
+bool isnotshiphere(int xb,int xe,int yb,int ye,int state,int map[map_rows][map_columns]);
 void getships(int map[map_rows][map_columns],Ships * head,int size);
 void getshipsize1(int map[map_rows][map_columns],Ships * head);
 void setmap(int map[map_rows][map_columns],Ships * head);
@@ -69,7 +70,7 @@ int main() {
                 system("cls");
                 break;
             case 2:
-                play_with_bot(list);
+                //play_with_bot();
                 system("cls");
                 break;
             case 3 :
@@ -372,6 +373,36 @@ void printmap_for_set(int map[map_rows][map_columns]){
         printf("\n");
     }
 }
+void newship(Ships ** head, int xb,int yb,int xe,int ye,int size,int state) {
+    Ships * new = (Ships *)malloc(sizeof(Ships));
+    new->cord_x_b = xb;
+    new->cord_x_e = xe;
+    new->cord_y_b = yb;
+    new->cord_y_e = ye;
+    new->size = size;
+    new->state = state;
+    new->next = NULL;
+    if (*head == NULL) *head = new;
+    else {
+        Ships * lastship = *head;
+        while (lastship->next != NULL) lastship = lastship->next;
+        lastship->next = new;
+    }
+}
+bool isnotshiphere(int xb,int xe,int yb,int ye,int state ,int map[map_rows][map_columns]) {
+    if (state == 1) {
+        for (int i = yb ; i < ye + 1 ; i++){
+            if (map[xb][i] == 1 || map[xb][i] == 2) return false;
+        }
+        return true;
+    }
+    else if (state == 2){
+        for (int i = xb ; i < xe+1 ; i++){
+            if (map[i][yb] == 1 || map[i][yb] == 2) return false;
+        }
+        return true;
+    }
+}
 void getships(int map[map_rows][map_columns],Ships * head,int size){
     int xb,xe,yb,ye,state;
     while(1) {
@@ -560,26 +591,6 @@ void play_with_friend(User * head)
     setmap(map_player2,player2_ships);
 
 
-}
-void play_with_bot(User * head) {
-    User *player1;
-    printf("FirstPlayer\n");
-    printf("1.Chose User\n2.New User\n");
-    int opp;
-    scanf("%d", &opp);
-    system("cls");
-    if (opp == 1) {
-        player1 = choseuser(head);
-    } else if (opp == 2) {
-        player1 = (User *) malloc(sizeof(User));
-        get_AND_add(&head);
-        save(head);
-        User *temp;
-        for (temp = head; temp->next != NULL; temp = temp->next);
-        strcpy(player1->username, temp->username);
-        player1->score = temp->score;
-        player1->next = NULL;
-    }
 }
 /*
  * With Thank to Saman Husseini ,Muhammad Fatemi, Amirparsa Salmankhah(DADDY) , Faraz Farangi Zadeh , and َ All TAs

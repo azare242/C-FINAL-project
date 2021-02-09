@@ -14,36 +14,6 @@ typedef struct ships{
     int state;
     struct ships * next;
 }Ships;
-bool isnotshiphere(int xb,int xe,int yb,int ye,int state ,int map[map_rows][map_columns]) {
-    if (state == 1) {
-        for (int i = yb ; i < ye + 1 ; i++){
-            if (map[xb][i] == 1 || map[xb][i] == 2) return false;
-        }
-        return true;
-    }
-    else if (state == 2){
-        for (int i = xb ; i < xe+1 ; i++){
-            if (map[i][yb] == 1 || map[i][yb] == 2) return false;
-        }
-        return true;
-    }
-}
-void newship(Ships ** head, int xb,int yb,int xe,int ye,int size,int state) {
-    Ships * new = (Ships *)malloc(sizeof(Ships));
-    new->cord_x_b = xb;
-    new->cord_x_e = xe;
-    new->cord_y_b = yb;
-    new->cord_y_e = ye;
-    new->size = size;
-    new->state = state;
-    new->next = NULL;
-    if (*head == NULL) *head = new;
-    else {
-        Ships * lastship = *head;
-        while (lastship->next != NULL) lastship = lastship->next;
-        lastship->next = new;
-    }
-}
 void setshipsonmap(int xb,int xe,int yb,int ye,int state,int map[map_rows][map_columns])
 {
     if (state == 1) {
