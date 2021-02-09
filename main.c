@@ -373,7 +373,7 @@ void printmap_for_set(int map[map_rows][map_columns]){
         printf("\n");
     }
 }
-oid newship(Ships ** head, int xb,int yb,int xe,int ye,int size,int state) {
+void newship(Ships ** head, int xb,int yb,int xe,int ye,int size,int state) {
     Ships * new = (Ships *)malloc(sizeof(Ships));
     new->cord_x_b = xb;
     new->cord_x_e = xe;
