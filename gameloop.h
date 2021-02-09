@@ -39,17 +39,25 @@ void printmap(char map[map_rows][map_columns])
         printf("\n");
     }
 }
+bool is_map_emptied(int map[map_rows][map_columns]){
+    for (int i = 0 ; i < map_rows ; i++){
+        for (int j = 0 ; j < map_columns ; j++){
+            if (map[i][j] == 1) return false;
+        }
+    }
+    return true;
+}
 void gameloop(int map_player1[map_rows][map_columns],int map_player2[map_rows][map_columns],Ships ** head1,Ships ** head2,char map_player1_for_show[map_rows][map_columns],char map_player2_for_show[map_rows][map_columns],User * player1,User * player2)
 {
     int temp_score_player1 = 0 , temp_score_player2 = 0;
     int attack_x , attack_y;
     while (1){
-        if (*head1 == NULL){
+        if (is_map_emptied(map_player1)){
             player2->score += temp_score_player2;
             player1->score += temp_score_player1 / 2;
             break;
         }
-        if (*head2 == NULL){
+        if (is_map_emptied(map_player2)){
             player2->score += temp_score_player2 / 2;
             player1->score += temp_score_player1;
             break;

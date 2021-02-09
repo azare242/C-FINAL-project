@@ -76,7 +76,7 @@ int main() {
                 system("cls");
                 break;
             case 2:
-                //play_with_bot();
+                play_with_bot(list);
                 system("cls");
                 break;
             case 3 :
@@ -712,6 +712,39 @@ void bot_attack(char showmap[map_rows][map_columns],int map_player[map_rows][map
 
         }
     }
+}
+void play_with_bot(User * head){
+    User * player;
+    printf("Player\n");
+    printf("1.Chose User\n2.New User\n");
+    int opp;
+    scanf("%d",&opp);
+    system("cls");
+    if (opp == 1){
+        player = choseuser(head);
+    }
+    else if(opp == 2){
+        player = (User *)malloc(sizeof(User));
+        get_AND_add(&head);
+        save(head);
+        User * temp;
+        for ( temp = head ; temp->next != NULL ; temp = temp->next);
+        strcpy(player->username,temp->username);
+        player->score = temp->score;
+        player->next = NULL;
+    }
+    system("cls");
+    int map_player[map_rows][map_columns],map_bot[map_rows][map_columns];
+    char map_player_show[map_rows][map_columns], map_bot_show[map_rows][map_columns];
+    initplayermap_empty(map_player);
+    initshowmap_empty(map_player_show);
+    initplayermap_empty(map_bot);
+    initshowmap_empty(map_bot_show);
+    Ships * player_ships = NULL, * bot_ships = NULL;
+    bot_set_map(map_bot,bot_ships);
+    setmap(map_player,player_ships);
+
+
 }
 /*
  * With Thank to Saman Husseini ,Muhammad Fatemi, Amirparsa Salmankhah(DADDY) , Faraz Farangi Zadeh , and َ All TAs
