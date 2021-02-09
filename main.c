@@ -70,7 +70,7 @@ int main() {
                 system("cls");
                 break;
             case 2:
-                //play_with_bot();
+                play_with_bot(list);
                 system("cls");
                 break;
             case 3 :
@@ -591,6 +591,26 @@ void play_with_friend(User * head)
     setmap(map_player2,player2_ships);
 
 
+}
+void play_with_bot(User * head) {
+    User *player1;
+    printf("FirstPlayer\n");
+    printf("1.Chose User\n2.New User\n");
+    int opp;
+    scanf("%d", &opp);
+    system("cls");
+    if (opp == 1) {
+        player1 = choseuser(head);
+    } else if (opp == 2) {
+        player1 = (User *) malloc(sizeof(User));
+        get_AND_add(&head);
+        save(head);
+        User *temp;
+        for (temp = head; temp->next != NULL; temp = temp->next);
+        strcpy(player1->username, temp->username);
+        player1->score = temp->score;
+        player1->next = NULL;
+    }
 }
 /*
  * With Thank to Saman Husseini ,Muhammad Fatemi, Amirparsa Salmankhah(DADDY) , Faraz Farangi Zadeh , and َ All TAs
