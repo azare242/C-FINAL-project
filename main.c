@@ -47,6 +47,7 @@ User * choseuser(User * head);
 void initshowmap_empty(char map[map_rows][map_columns]);
 void initplayermap_empty(int map[map_rows][map_columns]);
 void printmap_for_set(int map[map_rows][map_columns]);
+void printmap_ingame(char map[map_rows][map_columns]);
 void getships(int map[map_rows][map_columns],Ships * head,int size);
 void getshipsize1(int map[map_rows][map_columns],Ships * head);
 void setmap(int map[map_rows][map_columns],Ships * head);
@@ -557,7 +558,6 @@ void play_with_friend(User * head)
     Ships *player1_ships = NULL , *player2_ships = NULL;
     setmap(map_player1,player1_ships);
     setmap(map_player2,player2_ships);
-    gameloop(map_player1,map_player2,player1_ships,player2_ships,map_player1_for_show,map_player2_for_show,player1,player2);
 
 
 }
@@ -580,17 +580,6 @@ void play_with_bot(User * head) {
         player1->score = temp->score;
         player1->next = NULL;
     }
-    int map_player[map_rows][map_columns],map_bot[map_rows][map_columns];
-    char map_player_show[map_rows][map_columns], map_bot_show[map_rows][map_columns];
-    initplayermap_empty(map_player);
-    initshowmap_empty(map_player_show);
-    initplayermap_empty(map_bot);
-    initshowmap_empty(map_bot_show);
-    Ships * player_ships = NULL, * bot_ships = NULL;
-    bot_set_map(map_bot,bot_ships);
-    setmap(map_player,player_ships);
-
-
 }
 /*
  * With Thank to Saman Husseini ,Muhammad Fatemi, Amirparsa Salmankhah(DADDY) , Faraz Farangi Zadeh , and َ All TAs
