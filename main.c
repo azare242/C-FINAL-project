@@ -373,7 +373,7 @@ void printmap_for_set(int map[map_rows][map_columns]){
         printf("\n");
     }
 }
-void newship(Ships ** head, int xb,int yb,int xe,int ye,int size,int state) {
+oid newship(Ships ** head, int xb,int yb,int xe,int ye,int size,int state) {
     Ships * new = (Ships *)malloc(sizeof(Ships));
     new->cord_x_b = xb;
     new->cord_x_e = xe;
@@ -381,8 +381,13 @@ void newship(Ships ** head, int xb,int yb,int xe,int ye,int size,int state) {
     new->cord_y_e = ye;
     new->size = size;
     new->state = state;
-    new->next= *head;
-    *head = new;
+    new->next = NULL;
+    if (*head == NULL) *head = new;
+    else {
+        Ships * lastship = *head;
+        while (lastship->next != NULL) lastship = lastship->next;
+        lastship->next = new;
+    }
 }
 bool isnotshiphere(int xb,int xe,int yb,int ye,int state ,int map[map_rows][map_columns]) {
     if (state == 1) {
@@ -581,7 +586,7 @@ void play_with_friend(User * head)
     char map_player1_for_show[map_rows][map_columns],map_player2_for_show[map_rows][map_columns];
     initshowmap_empty(map_player1_for_show);
     initshowmap_empty(map_player2_for_show);
-    Ships *player1_ships = (Ships *)malloc(sizeof(Ships)) , *player2_ships = (Ships *)malloc(sizeof(Ships));
+    Ships *player1_ships = NULL , *player2_ships = NULL;
     setmap(map_player1,player1_ships);
     setmap(map_player2,player2_ships);
 
