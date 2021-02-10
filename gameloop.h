@@ -43,7 +43,7 @@ bool is_ship_distroyed(char map[map_rows][map_columns],int xb,int xe,int yb,int 
 }
 void delete_ship(Ships ** ships,int xb, int xe , int yb, int ye,int state , int size) {
 
-    if ((*ships)->cord_x_b == xb && (*ships)->cord_x_e == xe && (*ships)->cord_y_b == yb && (*ships)->cord_y_e == ye && (*ships)->state == state & (*ships)->size == size) {
+    if ((*ships)->cord_x_b == xb && (*ships)->cord_x_e == xe && (*ships)->cord_y_b == yb && (*ships)->cord_y_e == ye && (*ships)->state == state && (*ships)->size == size) {
         Ships *delete = *ships;
         *ships = (*ships)->next;
         free(delete);
