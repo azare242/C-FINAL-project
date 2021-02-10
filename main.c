@@ -10,9 +10,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <time.h>
 #include "maps.h"
 #include "gameloop.h"
-#include <time.h>
+
 void start() {
     printf("*********************************\n");
     printf("*     WELCOME TO BATTLESHIP     *\n");
@@ -649,6 +650,7 @@ PlayerShipsMap set_map_bot(PlayerShipsMap bot)
 
     return temp;
 }
+
 void play_with_bot(User * head){
     User * player;
     printf("Player\n");
@@ -670,10 +672,16 @@ void play_with_bot(User * head){
         player->next = NULL;
     }
     system("cls");
+    User * bot = (User *)malloc(sizeof(User));
+    strcpy(bot->username,"BOT");
+    bot->score = 0;
+    bot->next = NULL;
     PlayerShipsMap temp1,temp2;
     PlayerShipsMap player_ships_map ,bot_ships_map;
     initplayermap_empty(temp1.playermap);
     initplayermap_empty(temp2.playermap);
+    char map_player_for_show[map_rows][map_columns] , map_bot_for_show[map_rows][map_columns];
+    initshowmap_empty(map_bot_for_show);initshowmap_empty(map_player_for_show);
     temp1.player_ships = NULL;
     temp2.player_ships = NULL;
     bot_ships_map = set_map_bot(temp2);
@@ -681,6 +689,17 @@ void play_with_bot(User * head){
     getchar();getchar();
     system("cls");
     player_ships_map = set_map(temp1);
+    gameloop_with_bot(player_ships_map.playermap,bot_ships_map.playermap,&player_ships_map.player_ships,&bot_ships_map.player_ships,map_player_for_show,map_bot_for_show,player,bot);
+
+    for(User * temp = head ; temp != NULL ; temp = temp->next)
+    {
+        if(strcmp(temp->username,player->username) == 0){
+            temp->score += player->score;
+        }
+    }
+    save(head);
+
+    return;
 
 
 }

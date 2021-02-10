@@ -205,3 +205,110 @@ void gameloop(int map_player1[map_rows][map_columns],int map_player2[map_rows][m
     }
 
 }
+void gameloop_with_bot(int map_player[map_rows][map_columns],int map_bot[map_rows][map_columns],Ships ** player_ships,Ships ** bot_ships,char map_player_for_show[map_rows][map_columns],char map_bot_for_show[map_rows][map_columns],User * player,User * bot)
+{
+    int temp_score = 0;
+    int attack_x , attack_y ;
+    while (1)
+    {
+        if (is_map_emptied(map_player)){
+            player->score += temp_score/ 2;
+            printf("\n%s WINS",bot->username);
+            printmap(map_player_for_show);
+            printmap(map_bot_for_show);
+            getchar();
+            getchar();
+            system("cls");
+            return;
+        }
+        if (is_map_emptied(map_bot)){
+            player->score += temp_score;
+            printf("\n%s WINS",player->username);
+            printmap(map_player_for_show);
+            printmap(map_bot_for_show);
+            getchar();
+            getchar();
+            system("cls");
+            return;
+        }
+
+        while (1){
+            printf("You Turn\nBot Map:\n");
+            printmap(map_bot_for_show);
+            printf("\nEnter Coordinates (ROW COLUMN) Of Place You Want To Attack\n");
+            scanf("%d %d",&attack_x,&attack_y);
+            system("cls");
+
+            if ((map_bot[attack_x][attack_y] == 0 || map_bot[attack_x][attack_y] == 2 ) && map_bot_for_show[attack_x][attack_y] == '-') {
+                map_bot_for_show[attack_x][attack_y] = 'W';
+                printf("Oops! The shooting went wrong!!!\n");
+                printmap(map_bot_for_show);
+                printf("\nPress Enter To Continue\n");
+                getchar();getchar();
+                system("cls");
+                break;
+            }
+            else if (map_bot[attack_x][attack_y] == 1 && map_bot_for_show[attack_x][attack_y] == '-'){
+                printf("KABOOM!!! YOU HIT BOT Ship\n");
+                map_bot_for_show[attack_x][attack_y] = 'E';
+                map_bot[attack_x][attack_y] = -1;
+
+                for (Ships * temp = *bot_ships ; temp != NULL ; temp=temp->next){
+                    if(is_ship_distroyed(map_bot_for_show,temp->cord_x_b,temp->cord_x_e,temp->cord_y_b,temp->cord_y_e,temp->state)) {
+                        update_showmap(map_bot_for_show,temp->state,temp->cord_x_b,temp->cord_x_e,temp->cord_y_b,temp->cord_y_e);
+                        delete_ship(bot_ships,temp->cord_x_b,temp->cord_x_e,temp->cord_y_b,temp->cord_y_e,temp->state,temp->size);
+                        temp_score += complete_explode_score(temp->size);
+                    }
+                }
+                printmap(map_bot_for_show);
+                temp_score++;
+                printf("\nPress Enter To Continue\n");
+                getchar();
+                getchar();
+                system("cls");
+                //check_ships(*bot_ships,map_bot_for_show,map_bot,temp_score);
+            }
+            else if (map_bot_for_show[attack_x][attack_y] != '-'){
+                printf("You Can't HIT This Place\nPress Enter To Try Again\n");
+                getchar();getchar();
+                system("cls");
+            }
+
+        }
+        while (1){
+            srand(time(0));
+            attack_x = rand() % 10;
+            attack_y = rand() % 10;
+            if ((map_player[attack_x][attack_y] == 0 || map_player[attack_x][attack_y] == 2 ) && map_player_for_show[attack_x][attack_y] == '-'){
+                map_player_for_show[attack_x][attack_y] = 'W';
+                printf("BOT SHOOT WRONG\n");
+                printmap(map_player_for_show);
+                printf("\nPress Enter To Continue\n");
+                getchar();getchar();
+                system("cls");
+
+                break;
+            }
+            else if (map_player[attack_x][attack_y] == 1 && map_player_for_show[attack_x][attack_y] == '-') {
+                printf("BOT HITS YOU Ship\n");
+                map_player_for_show[attack_x][attack_y] = 'E';
+                map_player[attack_x][attack_y] = -1;
+                for (Ships * temp = *player_ships ; temp!=NULL ; temp = temp->next){
+                    if(is_ship_distroyed(map_player_for_show,temp->cord_x_b,temp->cord_x_e,temp->cord_y_b,temp->cord_y_e,temp->state)) {
+                        update_showmap(map_player_for_show,temp->state,temp->cord_x_b,temp->cord_x_e,temp->cord_y_b,temp->cord_y_e);
+                        delete_ship(player_ships,temp->cord_x_b,temp->cord_x_e,temp->cord_y_b,temp->cord_y_e,temp->state,temp->size);
+                    }
+                }
+                printmap(map_player_for_show);
+                printf("\nPress Enter To Continue\n");
+                getchar();getchar();
+                system("cls");
+//          check_ships_for_bot_shoots(*player_ships,map_player_for_show,map_player);
+            }
+            else if (map_player_for_show[attack_x][attack_y] != '-'){
+                continue;
+            }
+
+        }
+    }
+}
