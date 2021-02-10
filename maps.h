@@ -155,9 +155,8 @@ void setshipsonmap(int xb,int xe,int yb,int ye,int state,int map[map_rows][map_c
         }
     }
 }
-void update_showmap(char showmap[map_rows][map_columns],Ships * ship)
+void update_showmap(char showmap[map_rows][map_columns],int state,int xb,int xe,int yb,int ye)
 {
-    int xb = ship->cord_x_b , xe = ship->cord_x_e , yb = ship->cord_y_b , ye = ship->cord_y_e , state = ship->state;
 
     if (state == 1) {
         if (xb != 0 && xb != 9) {

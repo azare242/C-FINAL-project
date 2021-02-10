@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <math.h>
 #include <string.h>
 #include "maps.h"
 #include "gameloop.h"
@@ -356,7 +355,7 @@ void initshowmap_empty(char map[map_rows][map_columns]){
     {
         for (int j = 0 ; j < map_columns ; j++)
         {
-            map[i][j] = (char)220;
+            map[i][j] = '-';
         }
     }
 }
@@ -604,8 +603,22 @@ void play_with_friend(User * head)
     temp2.player_ships = NULL;
     player1_ships_map = set_map(temp1);
     player2_ships_map = set_map(temp2);
+    char map_show1[map_rows][map_columns] , map_show2[map_rows][map_columns];
+    initshowmap_empty(map_show1);initshowmap_empty(map_show2);
+    gameloop(player1_ships_map.playermap,player2_ships_map.playermap,&player1_ships_map.player_ships,&player2_ships_map.player_ships,map_show1,map_show2,player1,player2);
 
+    for(User * temp = head ; temp != NULL ; temp = temp->next)
+    {
+        if(strcmp(temp->username,player1->username) == 0){
+            temp->score += player1->score;
+        }
+        if (strcmp(temp->username,player2->username) == 0){
+            temp->score += player2->score;
+        }
+    }
+    save(head);
 
+    return;
 
 }
 PlayerShipsMap set_map_bot(PlayerShipsMap bot)
