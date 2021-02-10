@@ -36,6 +36,7 @@ void load_last_game();
 void setting();
 void scoreboard(User * head);
 void deletelist(User ** head);
+void get_AND_add(User ** head);
 void add(User ** head,char username[20]);
 void init_user(User ** head);
 void print(User * head);
@@ -43,6 +44,10 @@ void save(User * head);
 User * loadnext (User * head, FILE * file);
 User * load(User * head);
 User * choseuser(User * head);
+void rev(User * current, User * previous, User ** head);
+void reve(User ** head);
+void sort(User ** head);
+void print_for_scoreboard(User * head);
 void initshowmap_empty(char map[map_rows][map_columns]);
 void initplayermap_empty(int map[map_rows][map_columns]);
 void printmap_for_set(int map[map_rows][map_columns]);
@@ -80,9 +85,11 @@ int main() {
             case 1 :
                 play_with_friend(list);
                 system("cls");
+                list = load(list);
                 break;
             case 2:
                 play_with_bot(list);
+                list = load(list);
                 system("cls");
                 break;
             case 3 :
@@ -94,12 +101,14 @@ int main() {
                 system("cls");
                 break;
             case 5 :
-                setting();
+                scoreboard(list);
+                list = load(list);
                 system("cls");
                 break;
             case 6:
-                //scoreboard();
+                setting();
                 system("cls");
+                break;
             case 7 :
                 exit(10);
             default:
@@ -108,6 +117,62 @@ int main() {
                 system("cls");
         }
     }
+}
+void rev(User * current, User * previous, User ** head){
+    if (!current->next) {
+        *head = current;
+        current->next = previous;
+        return;
+    }
+    User * next = current->next;
+    current->next = previous;
+    rev(next, current, head);
+}
+
+void reve(User ** head){
+    if (!head)
+        return;
+    rev(*head, NULL, head);
+}
+
+void sort(User ** head) {
+    User *prev = *head;
+    User *curr = (*head)->next;
+
+    while (curr != NULL) {
+        if (curr->score < prev->score) {
+            prev->next = curr->next;
+            curr->next = *head;
+            *head = curr;
+
+            curr = prev;
+        } else
+            prev = curr;
+        curr = curr->next;
+    }
+}
+void print_for_scoreboard(User * head)
+{
+    printf("#|USERNAME            |SCORE     \n");
+    User * temp = head;
+    int i = 1;
+    for ( temp ; temp != NULL ; temp=temp->next){
+        printf("%d|%-20s|%-10d\n",i,temp->username,temp->score);
+        i++;
+    }
+}
+
+void scoreboard(User * head)
+{
+    User * temp = head;
+    sort(&temp);
+    reve(&temp);
+    print_for_scoreboard(temp);
+    printf("PRESS ENTER TO RETURN TO MAIN MENU\n");
+    getchar();getchar();
+    system("cls");
+    free(temp);
+    return;
 }
 void setting() {
     int op1;
