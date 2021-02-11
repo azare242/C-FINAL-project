@@ -74,8 +74,9 @@ void gameloop(int map_player1[map_rows][map_columns],int map_player2[map_rows][m
 
             while (1){
                 int op1 ;
-                printf("1.Continue\n2.SaveGameAndReturnToMainMenu\n");
+                printf("1.Continue\n2.SaveGameAndReturnToMainMenu\n3.EndGameAndExit\n");
                 scanf("%d",&op1);
+                system("cls");
                 if(op1 == 1) break;
                 else if (op1 == 2){
                     char savename[20];
@@ -90,9 +91,14 @@ void gameloop(int map_player1[map_rows][map_columns],int map_player2[map_rows][m
                     save_usernames(savename,player1->username,player2->username);
                     FILE * LAST_GAME;
                     fopen_s(&LAST_GAME,"LAST_GAME","w");
-                    fprintf(LAST_GAME,"%s",savename);
+                    fprintf(LAST_GAME,"%d,%s",1,savename);
                     temp_score_player1=0;
                     temp_score_player2=0;
+                    return;
+                }
+                else if (op1 == 3) {
+                    temp_score_player1 = 0;
+                    temp_score_player2 = 0;
                     return;
                 }
                 else continue;
@@ -156,8 +162,9 @@ void gameloop(int map_player1[map_rows][map_columns],int map_player2[map_rows][m
         while (1){
             while (1){
                 int op2 ;
-                printf("1.Continue\n2.SaveGameAndReturnToMainMenu\n");
+                printf("1.Continue\n2.SaveGameAndReturnToMainMenu\n3.EndGameAndExit\n");
                 scanf("%d",&op2);
+                system("cls");
                 if(op2 == 1) break;
                 else if (op2 == 2){
                     char savename[20];
@@ -172,9 +179,14 @@ void gameloop(int map_player1[map_rows][map_columns],int map_player2[map_rows][m
                     save_usernames(savename,player1->username,player2->username);
                     FILE * LAST_GAME;
                     fopen_s(&LAST_GAME,"LAST_GAME","w");
-                    fprintf(LAST_GAME,"%s",savename);
+                    fprintf(LAST_GAME,"%d,%s",1,savename);
                     temp_score_player1=0;
                     temp_score_player2=0;
+                    return;
+                }
+                else if (op2 == 3){
+                    temp_score_player1 = 0;
+                    temp_score_player2 = 0;
                     return;
                 }
                 else continue;
@@ -244,6 +256,7 @@ void gameloop_with_bot(int map_player[map_rows][map_columns],int map_bot[map_row
             int op1;
             printf("1.Continue\n2.SaveGameAndReturnToMainMenu\n");
             scanf("%d", &op1);
+            system("cls");
             if (op1 == 1) break;
             else if (op1 == 2) {
                 char savename[20];
@@ -258,7 +271,7 @@ void gameloop_with_bot(int map_player[map_rows][map_columns],int map_bot[map_row
                 save_usernames(savename,player->username,bot->username);
                 FILE * LAST_GAME;
                 fopen_s(&LAST_GAME,"LAST_GAME","w");
-                fprintf(LAST_GAME,"%s",savename);
+                fprintf(LAST_GAME,"%d,%s",2,savename);
                 temp_score = 0;
                 return;
             } else continue;

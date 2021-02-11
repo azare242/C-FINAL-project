@@ -56,7 +56,6 @@ Ships * addship(int xb,int yb,int xe,int ye,int size,int state);
 void newship(Ships ** head,int xb,int yb,int xe,int ye,int size,int state);
 bool isnotshiphere(int xb,int xe,int yb,int ye,int state,int map[map_rows][map_columns]);
 int scan_state(int map[map_rows][map_columns],int size);
-
 typedef struct coords{
     int xb;
     int xe;
@@ -94,10 +93,14 @@ int main() {
                 break;
             case 3 :
                 //loadgame();
+                printf("SALAM, TAVABE MARBOT BE LOAD GAME RO ZADAM VALI BE ELAT MOSHKELATI NATOONESTAM BE PROJECT EZAFE KONAM\nSorry\n");
+                getchar();getchar();
                 system("cls");
                 break;
             case 4 :
                 //load_last_game();
+                printf("SALAM, TAVABE MARBOT BE LOAD GAME RO ZADAM VALI BE ELAT MOSHKELATI NATOONESTAM BE PROJECT EZAFE KONAM\nSorry\n");
+                getchar();getchar();
                 system("cls");
                 break;
             case 5 :
@@ -167,7 +170,7 @@ void scoreboard(User * head)
     User * temp = head;
     sort(&temp);
     reve(&temp);
-    print_for_scoreboard(temp);
+    print_for_scoreboard(head);
     printf("PRESS ENTER TO RETURN TO MAIN MENU\n");
     getchar();getchar();
     system("cls");
