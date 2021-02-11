@@ -87,6 +87,7 @@ void gameloop(int map_player1[map_rows][map_columns],int map_player2[map_rows][m
                     save_ships(*head1,savename,player1->username);
                     save_ships(*head2,savename,player2->username);
                     save_scores_pvp(savename,temp_score_player1,temp_score_player2);
+                    save_usernames(savename,player1->username,player2->username);
                     temp_score_player1=0;
                     temp_score_player2=0;
                     return;
@@ -165,6 +166,7 @@ void gameloop(int map_player1[map_rows][map_columns],int map_player2[map_rows][m
                     save_ships(*head1,savename,player1->username);
                     save_ships(*head2,savename,player2->username);
                     save_scores_pvp(savename,temp_score_player1,temp_score_player2);
+                    save_usernames(savename,player1->username,player2->username);
                     temp_score_player1=0;
                     temp_score_player2=0;
                     return;

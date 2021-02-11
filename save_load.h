@@ -114,3 +114,13 @@ void add_pvb_save_to_list(char name[20])
     fprintf(saves,"\n%s",name);
     fclose(saves);
 }
+void save_usernames(char savename[20],char name1[20],char name2[20])
+{
+    FILE * savegame;
+    char temp[20];
+    strcpy(temp,savename);
+    strncat(temp,"USERNAMES",10);
+    fopen_s(&savegame,temp,"w");
+    fprintf(savegame,"%s %s",name1,name2);
+    fclose(savegame);
+}
