@@ -12,8 +12,8 @@
 #include <string.h>
 #include <time.h>
 #include "maps.h"
+#include "save_load.h"
 #include "gameloop.h"
-
 void start() {
     printf("*********************************\n");
     printf("*     WELCOME TO BATTLESHIP     *\n");
