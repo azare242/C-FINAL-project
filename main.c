@@ -171,8 +171,6 @@ void scoreboard(User * head)
     printf("PRESS ENTER TO RETURN TO MAIN MENU\n");
     getchar();getchar();
     system("cls");
-    free(temp);
-    return;
 }
 void setting() {
     int op1;

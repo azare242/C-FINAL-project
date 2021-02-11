@@ -70,29 +70,7 @@ void gameloop(int map_player1[map_rows][map_columns],int map_player2[map_rows][m
     int temp_score_player1 = 0 , temp_score_player2 = 0;
     int attack_x , attack_y;
     while (1){
-        if (is_map_emptied(map_player1)){
-            player2->score += temp_score_player2;
-            player1->score += temp_score_player1 / 2;
-            printf("\n%s WINS",player2->username);
-            printmap(map_player2_for_show);
-            printmap(map_player1_for_show);
-            getchar();
-            getchar();
-            system("cls");
-            return;
-        }
-        if (is_map_emptied(map_player2)){
-            player2->score += temp_score_player2 / 2;
-            player1->score += temp_score_player1;
-            printf("\n%s WINS",player1->username);
-            printmap(map_player2_for_show);
-            printmap(map_player1_for_show);
 
-            getchar();
-            getchar();
-            system("cls");
-            return;
-        }
 
         while (1){
             /*
@@ -133,6 +111,20 @@ void gameloop(int map_player1[map_rows][map_columns],int map_player2[map_rows][m
                         delete_ship(head2,temp->cord_x_b,temp->cord_x_e,temp->cord_y_b,temp->cord_y_e,temp->state,temp->size);
                         temp_score_player1 += complete_explode_score(temp->size);
                     }
+                }
+                if (is_map_emptied(map_player2)){
+                    player2->score += temp_score_player2 / 2;
+                    player1->score += temp_score_player1;
+                    printf("\n%s WINS\n",player1->username);
+                    printf("%s MAP:\n",player2->username);
+                    printmap(map_player2_for_show);
+                    printf("%s MAP:\n",player1->username);
+                    printmap(map_player1_for_show);
+
+                    getchar();
+                    getchar();
+                    system("cls");
+                    return;
                 }
                 printmap(map_player2_for_show);
                 temp_score_player1++;
@@ -187,6 +179,19 @@ void gameloop(int map_player1[map_rows][map_columns],int map_player2[map_rows][m
                         temp_score_player2 += complete_explode_score(temp->size);
                     }
                 }
+                if (is_map_emptied(map_player1)){
+                    player2->score += temp_score_player2;
+                    player1->score += temp_score_player1 / 2;
+                    printf("\n%s WINS\n",player2->username);
+                    printf("%s MAP:\n",player2->username);
+                    printmap(map_player2_for_show);
+                    printf("%s MAP:\n",player2->username);
+                    printmap(map_player1_for_show);
+                    getchar();
+                    getchar();
+                    system("cls");
+                    return;
+                }
                 printmap(map_player1_for_show);
                 temp_score_player2++;
                 printf("\nPress Enter To Continue\n");
@@ -211,26 +216,7 @@ void gameloop_with_bot(int map_player[map_rows][map_columns],int map_bot[map_row
     int attack_x , attack_y ;
     while (1)
     {
-        if (is_map_emptied(map_player)){
-            player->score += temp_score/ 2;
-            printf("\n%s WINS",bot->username);
-            printmap(map_player_for_show);
-            printmap(map_bot_for_show);
-            getchar();
-            getchar();
-            system("cls");
-            return;
-        }
-        if (is_map_emptied(map_bot)){
-            player->score += temp_score;
-            printf("\n%s WINS",player->username);
-            printmap(map_player_for_show);
-            printmap(map_bot_for_show);
-            getchar();
-            getchar();
-            system("cls");
-            return;
-        }
+
 
         while (1){
             printf("You Turn\nBot Map:\n");
@@ -260,6 +246,19 @@ void gameloop_with_bot(int map_player[map_rows][map_columns],int map_bot[map_row
                         temp_score += complete_explode_score(temp->size);
                     }
                 }
+                if (is_map_emptied(map_bot)){
+                    player->score += temp_score;
+                    printf("\n%s WINS\n",player->username);
+                    printf("%s MAP\n",player->username);
+                    printmap(map_player_for_show);
+                    printf("%s MAP\n",bot->username);
+                    printmap(map_bot_for_show);
+                    getchar();
+                    getchar();
+                    system("cls");
+                    return;
+                }
+
                 printmap(map_bot_for_show);
                 temp_score++;
                 printf("\nPress Enter To Continue\n");
@@ -298,6 +297,18 @@ void gameloop_with_bot(int map_player[map_rows][map_columns],int map_bot[map_row
                         update_showmap(map_player_for_show,temp->state,temp->cord_x_b,temp->cord_x_e,temp->cord_y_b,temp->cord_y_e);
                         delete_ship(player_ships,temp->cord_x_b,temp->cord_x_e,temp->cord_y_b,temp->cord_y_e,temp->state,temp->size);
                     }
+                }
+                if (is_map_emptied(map_player)){
+                    player->score += temp_score/ 2;
+                    printf("\n%s WINS",bot->username);
+                    printf("%s MAP\n",player->username);
+                    printmap(map_player_for_show);
+                    printf("%s MAP\n",bot->username);
+                    printmap(map_bot_for_show);
+                    getchar();
+                    getchar();
+                    system("cls");
+                    return;
                 }
                 printmap(map_player_for_show);
                 printf("\nPress Enter To Continue\n");
