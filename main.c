@@ -1,11 +1,3 @@
-/*In The Name Of Allah
- *
- * Project : Battleship Game
- * Auth : ALIREZA ZARE ZEYNABADI (9931022)
- * CE Department @ AmirKabir University of Technology
- *
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -769,7 +761,3 @@ void play_with_bot(User * head){
 
 
 }
-/*
- * With Thank to Saman Husseini ,Muhammad Fatemi, Amirparsa Salmankhah(DADDY) , Faraz Farangi Zadeh , and َ All TAs
- * For Assist me in learning C Programing
- */
